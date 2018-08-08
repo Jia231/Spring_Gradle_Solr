@@ -1,0 +1,34 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack-start": "webpack -d",
+    "webpack-dev": "webpack-dev-server"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/react": "^16.4.8",
+    "@types/react-dom": "^16.0.7",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "webpack-cli": "^3.1.0"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "html-webpack-plugin": "^3.2.0",
+    "sass-loader": "^7.0.3",
+    "style-loader": "^0.21.0",
+    "ts-loader": "^4.4.2",
+    "typescript": "^3.0.1",
+    "css-loader": "^1.0.0",
+    "webpack": "^4.16.5",
+    "webpack-dev-server": "^3.1.5",
+    "node-sass": "^4.9.2"
+  }
+}

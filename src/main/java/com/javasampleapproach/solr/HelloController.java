@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.javasampleapproach.solr.model.Customer;
 import com.javasampleapproach.solr.repo.CustomerRepository;
-
+import java.util.ArrayList;
 @RestController
 public class HelloController {
  @Autowired
@@ -38,5 +38,13 @@ public class HelloController {
 		}
         return str;
     }
+	@RequestMapping("/users")
+	public ArrayList<Customer> users(){
+		ArrayList<Customer> customerList = new ArrayList<>();
+		for (Customer product : this.customerRepository.findAll()) {
+        customerList.add(product);
+		}
+		return customerList;
+	}
 
 }
