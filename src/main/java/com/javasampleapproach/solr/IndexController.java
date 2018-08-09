@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.javasampleapproach.solr.model.Customer;
 import com.javasampleapproach.solr.repo.CustomerRepository;
-import java.util.ArrayList;
+
 @RestController
-public class HelloController {
+public class IndexController {
  @Autowired
 	private CustomerRepository customerRepository;
     @RequestMapping("/")
@@ -16,7 +16,6 @@ public class HelloController {
    String str = "";
 
 	customerRepository.deleteAll();
-
 		// Store customers
 		customerRepository.saveAll(Arrays.asList(new Customer("1", "Jack", 20), 
 											new Customer("2", "Adam", 24),
@@ -36,15 +35,11 @@ public class HelloController {
 		for (Customer customer : this.customerRepository.findByNameEndsWith("m")) {
             str = str + "<br>"  + customer.getName();
 		}
+		str = str + "<br><br>" + "Customers that name starts in d" + "<br>";
+		for (Customer customer : this.customerRepository.findByNameStartsWith("d")) {
+            str = str + "<br>"  + customer.getName();
+		}
         return str;
     }
-	@RequestMapping("/users")
-	public ArrayList<Customer> users(){
-		ArrayList<Customer> customerList = new ArrayList<>();
-		for (Customer product : this.customerRepository.findAll()) {
-        customerList.add(product);
-		}
-		return customerList;
-	}
 
 }

@@ -8,4 +8,5 @@ import com.javasampleapproach.solr.model.Customer;
 
 public interface CustomerRepository extends SolrCrudRepository<Customer, String> {
 	List<Customer> findByNameEndsWith(String name);
+	List<Customer> findByNameStartsWith(String name);
 }
