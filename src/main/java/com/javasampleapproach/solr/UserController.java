@@ -21,13 +21,27 @@ public class UserController {
     @Autowired
     private JavaUtils javaUtils;
 
-    @RequestMapping("/users")
+   /* @RequestMapping("/users")
     public ArrayList<Customer> users(){
         ArrayList<Customer> customerList = new ArrayList<>();
         for(Customer product : this.customerRepository.findAll()){
             customerList.add(product);
         }
         return customerList;
+    }*/
+
+    @RequestMapping("/users")
+    public ResponseEntity<Response> users(){
+        ArrayList<Customer> customerList = new ArrayList<>();
+        for(Customer product : this.customerRepository.findAll()){
+            customerList.add(product);
+        }
+        Response res = new Response();
+        res.setData(customerList);
+
+        ResponseEntity<Response> responseEntity = new ResponseEntity<>(res,
+                                                                     HttpStatus.OK);
+            return responseEntity;
     }
    /* @PostMapping("/addUser")
     public String addUser(@RequestBody Customer customer){
@@ -46,9 +60,11 @@ public class UserController {
         public ResponseEntity<Response> addUser(RequestEntity<Customer> customer){
             //System.out.println(customer.getBody().getName() + " " + customer.getBody().getAge());
             Response res = new Response();
-            res.setData("User saved successfully");
+            ArrayList<String> output = new ArrayList<>();
+            output.add("User saved successfully");
+            res.setData(output);
             ResponseEntity<Response> responseEntity = new ResponseEntity<>(res,
-                                                                     HttpStatus.BAD_REQUEST);
+                                                                     HttpStatus.OK);
             return responseEntity;
         }
     
