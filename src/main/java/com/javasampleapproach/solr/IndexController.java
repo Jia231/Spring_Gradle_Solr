@@ -13,16 +13,9 @@ public class IndexController {
 	private CustomerRepository customerRepository;
     @RequestMapping("/")
     public String index() {
-   String str = "";
+   String str = "Hello from Spring";
 
-	customerRepository.deleteAll();
-		// Store customers
-		customerRepository.saveAll(Arrays.asList(new Customer("1", "Jack", 20), 
-											new Customer("2", "Adam", 24),
-											new Customer("3", "Kim", 27), 
-											new Customer("4", "David", 30), 
-											new Customer("5", "Peter", 21),
-											new Customer("6", "Jim", 21)));
+		/*
 
 
         str = "All customers: <br>" ; 
@@ -38,7 +31,7 @@ public class IndexController {
 		str = str + "<br><br>" + "Customers that name starts in d" + "<br>";
 		for (Customer customer : this.customerRepository.findByNameStartsWith("d")) {
             str = str + "<br>"  + customer.getName();
-		}
+		}*/
         return str;
     }
 

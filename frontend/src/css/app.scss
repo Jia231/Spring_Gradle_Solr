@@ -1,6 +1,37 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
 body{
-    background-color:darkmagenta;
+    background-color:white;
     div{
         color:white
     }
+    .Error-text{
+        color:#f44336!important;
+        font-size: 16px;
+        margin-left: 5px;
+    }
+    .customer{
+        font-family: 'Roboto', sans-serif;
+        font-size:18px;
+    }
 }
+
+.card-action{
+    margin-top:10px;
+    div{
+        float:left;
+        margin-right:10px;
+    }
+    .clear{
+        clear:both
+    }
+} 
+
+.row {
+    .form{
+        position: absolute;
+        background: #ededed;
+        z-index: 2;
+    }
+}
+
