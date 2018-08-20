@@ -16,6 +16,20 @@ body{
     }
 }
 
+.input-field{
+    label{
+        top:-39px;
+        font-size:16px
+    }
+}
+
+.row-select-form{
+    position: absolute;
+    background-color: #ededed;
+    width: 404px;
+    z-index: 2;
+    padding: 24px;
+}
 .card-action{
     margin-top:10px;
     div{
@@ -33,5 +47,9 @@ body{
         background: #ededed;
         z-index: 2;
     }
+}
+
+select{
+    display:inline!important
 }
 

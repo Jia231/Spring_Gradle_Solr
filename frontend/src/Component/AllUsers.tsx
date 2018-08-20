@@ -2,6 +2,9 @@ import * as React from "react";
 import {Customer} from './Customer';
 import {Button} from './Button';
 import {AddUserForm} from './AddUserForm'
+import {FilterForm} from './FilterForm';
+
+
 interface Customer {
     id:String,
     name:String,
@@ -11,7 +14,8 @@ interface Customer {
 interface MyState {
     data: Customer[],
     loading:boolean,
-    formVisible : string
+    formVisible : string,
+    filterForm : string
 }
 
 export class AllUsers extends React.Component<{},MyState>{
@@ -20,13 +24,18 @@ export class AllUsers extends React.Component<{},MyState>{
         this.state = {
             data:[],
             loading:true,
-            formVisible : "none"
+            formVisible : "none",
+            filterForm : "none"
         }
         this.clearData = this.clearData.bind(this)
         this.populateDatabase = this.populateDatabase.bind(this)
         this.showForm = this.showForm.bind(this)
         this.hideForm = this.hideForm.bind(this)
         this.onSubmitForm = this.onSubmitForm.bind(this)
+        this.showFilterForm = this.showFilterForm.bind(this)
+        this.hideFilterForm = this.hideFilterForm.bind(this)
+        this.handleSubmitFilter = this.handleSubmitFilter.bind(this)
+        this.getAllUsers = this.getAllUsers.bind(this)
     }
     componentDidMount(){
         fetch('http://localhost:8080/users')
@@ -48,6 +57,10 @@ export class AllUsers extends React.Component<{},MyState>{
 
     showForm(){
         this.setState({formVisible:"block"})
+    }
+
+    showFilterForm(){
+        this.setState({filterForm:"block"})
     }
 
     onSubmitForm(name:string,age:number){
@@ -75,6 +88,10 @@ export class AllUsers extends React.Component<{},MyState>{
         this.setState({formVisible:"none"})
     }
 
+    hideFilterForm(){
+        this.setState({filterForm:"none"})
+    }
+
     clearData(){
         this.setState({loading:true})
         fetch('http://localhost:8080/delete')
@@ -86,6 +103,20 @@ export class AllUsers extends React.Component<{},MyState>{
                 .then((res) => this.setState({data:res.data,loading:false}))
             }
         })
+    }
+
+    handleSubmitFilter(letter:string,filterBy:string){
+        this.setState({loading:true})
+        fetch("http://localhost:8080/filter", {
+            method: 'POST',
+            headers: new Headers({
+                       'Content-Type': 'application/json', 
+              }),
+            body: `{"letter":"${letter}","filterBy":"${filterBy}"}` 
+          })
+          .then(res=>res.json())
+          .then(res=>this.setState({data:res.data,loading:false}))
+
     }
     populateDatabase(){
         this.setState({loading:true})
@@ -99,8 +130,14 @@ export class AllUsers extends React.Component<{},MyState>{
            
         })
     }
+
+    getAllUsers(){
+        fetch('http://localhost:8080/users')
+        .then((res) => res.json())
+        .then((res) => this.setState({data:res.data,loading:false}))
+    }
     render(){
-        let {loading,formVisible} = this.state;
+        let {loading,formVisible,filterForm} = this.state;
         
         return (
             <div>
@@ -113,11 +150,14 @@ export class AllUsers extends React.Component<{},MyState>{
                             <div> <Button text="Clear database" click={this.clearData}/></div>
                             <div> <Button text="Populate database" click={this.populateDatabase}/></div>
                             <div> <Button text="Add user" click={this.showForm}/></div>
+                            <div> <Button text="Filter results" click={this.showFilterForm}/></div>
+                            <div><Button text="All Users" click={this.getAllUsers}/></div>
                             <div className="clear"></div>
                         </div>
                     )
                 }
                 <AddUserForm click={this.hideForm} onSubmit={this.onSubmitForm} visible={formVisible}/>
+                <FilterForm visible={filterForm} onCancel={this.hideFilterForm} onSubmit={this.handleSubmitFilter}/>
             </div>
         )
     }

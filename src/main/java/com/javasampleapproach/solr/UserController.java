@@ -1,20 +1,24 @@
 package com.javasampleapproach.solr;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.beans.factory.annotation.Autowired;
-import com.javasampleapproach.solr.model.Customer;
-import com.javasampleapproach.solr.repo.CustomerRepository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import com.javasampleapproach.solr.model.Filter;
+import com.javasampleapproach.solr.model.FilterActions;
+import com.javasampleapproach.solr.model.FilterActionOption;
+import com.javasampleapproach.solr.model.Customer;
+import com.javasampleapproach.solr.model.Response;
+import com.javasampleapproach.solr.utils.JavaUtils;
+import com.javasampleapproach.solr.repo.CustomerRepository;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.javasampleapproach.solr.model.Response;
-import com.javasampleapproach.solr.utils.JavaUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
+
 
 @CrossOrigin(origins = "http://localhost:9000")
 @RestController
@@ -23,16 +27,6 @@ public class UserController {
     private CustomerRepository customerRepository;
     @Autowired
     private JavaUtils javaUtils;
-
-   /* @RequestMapping("/users")
-    public ArrayList<Customer> users(){
-        ArrayList<Customer> customerList = new ArrayList<>();
-        for(Customer product : this.customerRepository.findAll()){
-            customerList.add(product);
-        }
-        return customerList;
-    }*/
-
     @RequestMapping("/users")
     public ResponseEntity<Response> users(){
         ArrayList<Customer> customerList = new ArrayList<>();
@@ -47,11 +41,18 @@ public class UserController {
             return responseEntity;
     }
 
-    @RequestMapping("/filter/m")
-    public ResponseEntity<Response> users(){
+    @PostMapping("/filter")
+    public ResponseEntity<Response> FilterBy(@RequestBody Filter f){
         ArrayList<Customer> customerList = new ArrayList<>();
-        for(Customer product : this.customerRepository.findByNameStartsWith()){
-            customerList.add(product);
+        if(f.getFilter().equals("findByNameEndsWith")){
+            for(Customer c : this.customerRepository.findByNameEndsWith(f.getLetter())){
+                customerList.add(c);
+            }
+        }
+        else if(f.getFilter().equals("findByNameStartsWith")){
+             for(Customer c : this.customerRepository.findByNameStartsWith(f.getLetter())){
+                customerList.add(c);
+            }
         }
         Response res = new Response();
         res.setData(customerList);
@@ -60,19 +61,19 @@ public class UserController {
                                                                      HttpStatus.OK);
             return responseEntity;
     }
-   /* @PostMapping("/addUser")
-    public String addUser(@RequestBody Customer customer){
-       if(javaUtils.validCustomer(customer)){
-           int l = javaUtils.assignId();
-           l = l +1;
-           String id = Integer.toString(l);
-           Customer newCustomer = new Customer(id,customer.getName(),customer.getAge());
-           customerRepository.save(newCustomer);
-           ResponseEntity<String> responseEntity = new ResponseEntity<>("my response body",
+
+    @RequestMapping("/actions")
+    public ResponseEntity<Response>  getFilterActions(){
+        ArrayList<FilterActionOption> options = new ArrayList<>();
+        FilterActions data = new FilterActions();
+       options =  data.getOptions();
+        Response res = new Response();
+        res.setData(options);
+         ResponseEntity<Response> responseEntity = new ResponseEntity<>(res,
                                                                      HttpStatus.OK);
-       }
-          return "there was an error";
-    }*/
+            return responseEntity;
+    }
+
     @RequestMapping("/delete")
     public ResponseEntity<Response> clearDatabase(){
         customerRepository.deleteAll();
@@ -136,3 +137,26 @@ public class UserController {
     
 }
 
+
+
+   /* @RequestMapping("/users")
+    public ArrayList<Customer> users(){
+        ArrayList<Customer> customerList = new ArrayList<>();
+        for(Customer product : this.customerRepository.findAll()){
+            customerList.add(product);
+        }
+        return customerList;
+    }
+    @PostMapping("/addUser")
+    public String addUser(@RequestBody Customer customer){
+       if(javaUtils.validCustomer(customer)){
+           int l = javaUtils.assignId();
+           l = l +1;
+           String id = Integer.toString(l);
+           Customer newCustomer = new Customer(id,customer.getName(),customer.getAge());
+           customerRepository.save(newCustomer);
+           ResponseEntity<String> responseEntity = new ResponseEntity<>("my response body",
+                                                                     HttpStatus.OK);
+       }
+          return "there was an error";
+    }*/
