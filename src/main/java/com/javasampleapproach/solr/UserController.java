@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,7 +28,8 @@ public class UserController {
     private CustomerRepository customerRepository;
     @Autowired
     private JavaUtils javaUtils;
-    @RequestMapping("/users")
+    //private JavaUtils javaUtils = new JavaUtils();
+    @GetMapping("/users")
     public ResponseEntity<Response> users(){
         ArrayList<Customer> customerList = new ArrayList<>();
         for(Customer product : this.customerRepository.findAll()){
@@ -62,7 +64,7 @@ public class UserController {
             return responseEntity;
     }
 
-    @RequestMapping("/actions")
+    @GetMapping("/actions")
     public ResponseEntity<Response>  getFilterActions(){
         ArrayList<FilterActionOption> options = new ArrayList<>();
         FilterActions data = new FilterActions();
@@ -74,7 +76,7 @@ public class UserController {
             return responseEntity;
     }
 
-    @RequestMapping("/delete")
+    @GetMapping("/delete")
     public ResponseEntity<Response> clearDatabase(){
         customerRepository.deleteAll();
         Response res = new Response();
@@ -86,7 +88,7 @@ public class UserController {
                                                                      HttpStatus.OK);
             return responseEntity;
     }
-    @RequestMapping("/populate")
+    @GetMapping("/populate")
     public ResponseEntity<Response> populateDatabase(){
        customerRepository.saveAll(Arrays.asList(new Customer("1", "Jack", 20), 
 											new Customer("2", "Adam", 24),
@@ -139,7 +141,7 @@ public class UserController {
 
 
 
-   /* @RequestMapping("/users")
+   /* @GetMapping("/users")
     public ArrayList<Customer> users(){
         ArrayList<Customer> customerList = new ArrayList<>();
         for(Customer product : this.customerRepository.findAll()){

@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.javasampleapproach.solr.model.Customer;
 import com.javasampleapproach.solr.repo.CustomerRepository;
-import org.springframework.stereotype.Component;
+//import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+//@Component
+@Service
 public class JavaUtils{
     @Autowired
 	private CustomerRepository customerRepository;
@@ -23,7 +25,7 @@ public class JavaUtils{
         }
     }
     public int assignId(){
-        System.out.println("in the assign class");
+        //System.out.println("in the assign class");
         ArrayList<Customer> customerList = new ArrayList<>();
         for(Customer product : this.customerRepository.findAll()){
             customerList.add(product);
